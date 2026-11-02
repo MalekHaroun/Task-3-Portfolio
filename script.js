@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = [...document.querySelectorAll('.nav-link')];
   const sections = [...document.querySelectorAll("main section[id]")];
 
-  // 1. Scroll Progress & Navbar styling
+  
   const updateScrollUI = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
   updateScrollUI();
   window.addEventListener("scroll", updateScrollUI, { passive: true });
 
-  // 2. Reveal Animations on Scroll
+  
   const revealItems = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target); // Stop observing once revealed
+          observer.unobserve(entry.target); 
         }
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -25px 0px" });
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     revealItems.forEach(item => item.classList.add("is-visible"));
   }
 
-  // 3. Active Nav Link Highlighting (Scroll Spy)
+  
   if ("IntersectionObserver" in window) {
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sections.forEach(section => sectionObserver.observe(section));
   }
 
-  // 4. Close mobile menu on click
+  
   document.querySelectorAll("#mainNav .nav-link, #mainNav .nav-contact").forEach(link => {
     link.addEventListener("click", () => {
       const nav = document.getElementById("mainNav");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 5. Interactive Art Hover Effect (FIXED MATH SYNTAX)
+  
   const art = document.querySelector(".hero-art");
   if (art && window.matchMedia("(pointer: fine)").matches) {
     art.addEventListener("pointermove", event => {
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 6. Interactive Per-Letter Hover Effect
+  
   const title = document.querySelector('.hero-title');
   if (title) {
     const wrapLetters = (node) => {
@@ -88,19 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = node.textContent;
         const fragment = document.createDocumentFragment();
         
-        // Split the text by spaces, but keep the spaces in the array
+        
         const words = text.split(/(\s+)/);
         
         words.forEach(word => {
           if (word.trim() === '') {
-            // It's a space, keep it normal
+            
             fragment.appendChild(document.createTextNode(word));
           } else {
-            // Wrap the whole word in a container that prevents mid-word breaking
+            
             const wordBox = document.createElement('span');
             wordBox.style.whiteSpace = 'nowrap'; 
             
-            // Put the individual bouncy letters inside the word box
+            
             for (let i = 0; i < word.length; i++) {
               const span = document.createElement('span');
               span.textContent = word[i];
@@ -119,12 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     Array.from(title.childNodes).forEach(wrapLetters);
   }
-  // 7. Interactive Tech Particles (Constellation Effect)
+  
   const initParticles = () => {
     const hero = document.querySelector('.hero-section');
     if (!hero) return;
 
-    // Create the invisible canvas
+    
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
     canvas.style.top = '0';
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctx = canvas.getContext('2d');
     let width, height, particles;
 
-    // Keep particles sized correctly if the window resizes
+    
     const resize = () => {
       width = canvas.width = hero.offsetWidth;
       height = canvas.height = hero.offsetHeight;
@@ -146,35 +146,35 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('resize', resize);
     resize();
 
-    // Particle Logic
+   
     class Particle {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.8; // Drift speed
+        this.vx = (Math.random() - 0.5) * 0.8;
         this.vy = (Math.random() - 0.5) * 0.8;
         this.radius = Math.random() * 2 + 0.5;
       }
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        // Bounce off walls
+        
         if (this.x < 0 || this.x > width) this.vx *= -1;
         if (this.y < 0 || this.y > height) this.vy *= -1;
       }
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(32, 35, 31, 0.4)'; // Dark ink color
+        ctx.fillStyle = 'rgba(32, 35, 31, 0.4)'; 
         ctx.fill();
       }
     }
 
-    // Use fewer particles on mobile to save battery
+    
     const particleCount = window.innerWidth < 768 ? 35 : 80;
     particles = Array.from({ length: particleCount }, () => new Particle());
 
-    // Track mouse position
+    
     let mouse = { x: -1000, y: -1000 };
     hero.addEventListener('mousemove', (e) => {
       const rect = hero.getBoundingClientRect();
@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mouse.y = -1000;
     });
 
-    // Animation Loop
+    
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
       
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
         p.update();
         p.draw();
         
-        // Connect particles to each other
+        
         particles.forEach(p2 => {
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
@@ -203,12 +203,12 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(32, 35, 31, ${0.15 - dist/800})`; // Fades with distance
+            ctx.strokeStyle = `rgba(32, 35, 31, ${0.15 - dist/800})`; 
             ctx.stroke();
           }
         });
 
-        // Connect particles to mouse
+        
         const dxm = p.x - mouse.x;
         const dym = p.y - mouse.y;
         const distm = Math.sqrt(dxm * dxm + dym * dym);
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(255, 128, 93, ${0.4 - distm/450})`; // Glowing orange
+          ctx.strokeStyle = `rgba(255, 128, 93, ${0.4 - distm/450})`;
           ctx.stroke();
         }
       });
